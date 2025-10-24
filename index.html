@@ -813,7 +813,8 @@ button:hover {
 @media (max-width: 768px) {
     .main-layout { flex-direction: column; }
     .left-panel {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: 10px;
         margin-top: 0;
     }
@@ -821,15 +822,23 @@ button:hover {
         width: 100%;
         margin-top: 20px;
     }
-    .option-buttons { flex-direction: row; }
-    .final-result-layout {
-        flex-direction: column;
+    .setting-group {
+        flex: 1 1 48%;
+        min-width: 150px;
+    }
+    .option-buttons { 
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .final-result-layout { 
+        flex-direction: column; 
         align-items: center;
     }
-    .result-left {
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-        width: 100%;
+    .result-left { 
+        border-right: none; 
+        border-bottom: 1px solid #ddd; 
+        width: 100%; 
         padding: 0 0 20px 0;
     }
     .result-right {
@@ -845,24 +854,61 @@ button:hover {
         padding: 15px;
     }
     h1 { font-size: 1.6em; }
-    .mobile-title { display: inline; }
-    .desktop-title { display: none; }
-    .desktop-home { display: none; }
-    .mobile-home { display: inline; }
-
-    .option-buttons button {
-        padding: 10px 10px;
-        min-width: unset;
+    h2 { font-size: 1.2em; }
+    
+    small { font-size: 14px; line-height: 1.4; } 
+    #mode-selection-page h1,
+    #setup-page h1 {
+        padding-top: 0; 
+        margin-bottom: 10px;
     }
-    #multiplication-container {
-        font-size: 1.8em;
-        width: 90%;
-        padding: 15px 20px 30px 20px;
+    #mode-selection-page {
+        gap: 10px;
+    }
+    #mode-selection-page h2 {
+        margin-bottom: 10px;
+    }
+    .mode-buttons {
+        margin-top: 10px;
+        flex-direction: column; 
+        gap: 10px; 
+    }
+    .mode-buttons button {
+        padding: 15px 10px;
+        font-size: 1.3em;
+        line-height: 1.3;
+        width: 100%; 
     }
     .mode-buttons button span {
         display: block;
     }
+    .mode-option {
+        width: 100%;
+        max-width: none;
+    }
+    .mode-description {
+        font-size: 12px; 
+        margin-bottom: 0;
+    }
+    .desktop-title { display: none; }
+    .mobile-title { display: inline; }
+    .desktop-home { display: none; }
+    .mobile-home { display: inline; }
+    .home-button { padding: 8px 10px; }
+    #back-to-mode-select-btn {
+        top: 10px !important;
+        left: 10px !important;
+    }
+    
+    .option-buttons button {
+        padding: 8px 8px;
+        font-size: 1em;
+    }
+    .main-layout {
+        gap: 10px;
+    }
 }
+
 </style>
 </head>
 <body>
@@ -1024,7 +1070,7 @@ button:hover {
 <div id="qr-popup-overlay" class="popup-overlay" style="display: none;">
     <div class="popup-qr popup-box">
         <button class="close-btn" onclick="closeQrPopup()">&times;</button>
-        <img src="https://i.imgur.com/v98rDMT.png" alt="QR Code">
+        <img src="https://i.imgur.com/XT0OsoI.png" alt="QR Code">
     </div>
 </div>
 
