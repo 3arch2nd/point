@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>소수의 곱셈 완전 정복</title>
+    <meta name="description" content="Educational Web App for Elementary School Learning | Education / School / Study / Quiz / Learning Activity for Students" />
+    <meta property="og:title" content="소수의 곱셈 완전 정복">
+    <meta property="og:description" content="소수의 곱셈 문제를 연습해보세요!">
+    <meta property="og:image" content="https://i.imgur.com/your-new-thumb.png">
+    <meta property="og:url" content="https://your-domain.com/multiplication/">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+    <style>
+body {
+    font-family: 'Gowun Dodum', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    text-align: center;
+}
+.container {
+    position: relative;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 760px;
+    text-align: center;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+h1 {
+    color: #4b8134;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+h2 {
+    color: #333;
+    margin-bottom: 5px;
+}
+small {
+    display: block;
+    font-size: 18px;
+    color: #6c757d;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+button {
+    font-family: 'Gowun Dodum', sans-serif;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+button:hover {
+    transform: translateY(-1px);
+}
+.primary-btn {
+    background-color: #a0c179;
+    color: white;
+}
+.primary-btn:hover {
+    background-color: #8cb24b;
+}
+.secondary-btn {
+    background-color: #e9e9e9;
+    color: #333;
+    border: none;
+}
+.secondary-btn:hover {
+    background-color: #d9d9d9;
+}
+.home-button {
+    background-color: #e9e9e9;
+    color: #333;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.home-button:hover {
+    background-color: #d9d9d9;
+}
+#qr-code-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 5px 10px;
+    font-size: 14px;
+    z-index: 20;
+}
+#setup-page .home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.mobile-title, .mobile-home { display: none; }
+.desktop-title, .desktop-home { display: inline; }
+
+
+#mode-selection-page {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.mode-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: space-around;
+}
+.mode-buttons button {
+    padding: 20px 30px;
+    font-size: 20px;
+    width: 100%;
+    max-width: 250px;
+}
+#classic-mode-btn {
+    background-color: #ffc107;
+    color: #333;
+    font-weight: bold;
+}
+#classic-mode-btn:hover {
+    background-color: #fdb827;
+}
+#time-attack-mode-btn {
+    background-color: #e06666;
+    color: white;
+    font-weight: bold;
+}
+#time-attack-mode-btn:hover {
+    background-color: #cc4125;
+}
+.mode-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+#setup-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.main-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+.left-panel { flex: 2; display: flex; flex-direction: column; gap: 20px; }
+.right-panel { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.setting-group {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+.option-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+.option-buttons button.selected {
+    background-color: #ffc107;
+    color: #333;
+    font-weight: bold;
+}
+.option-buttons button:not(.selected) {
+    background-color: #f0f0f0;
+    color: #333;
+}
+.settings-wrapper { position: relative; flex-grow: 1; }
+#start-quiz-btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    flex-shrink: 0;
+}
+.setting-group.start-btn-container { border: none; background-color: transparent; padding: 0; }
+#settings-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 8px;
+    z-index: 10;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1.5;
+}
+#quantity-control, #time-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+#quantity-control button, #time-control button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 30px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #333;
+}
+.quantity-display {
+    display: inline-block;
+    width: auto;
+    min-width: 40px;
+    height: auto;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.problem-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+#problem-number {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+#timer-display {
+    width: 120px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 10px;
+    color: #333;
+    display: none;
+}
+#problem-counter-display {
+    width: 120px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 10px;
+    color: #888;
+    display: none;
+}
+#timer-display.time-warning {
+    color: #dc3545;
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+.problem-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+#check-answer-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#check-answer-btn, #next-problem-btn {
+    min-width: 180px;
+}
+#check-answer-btn {
+    position: relative;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: white;
+    color: black;
+    border: 2px solid #999;
+}
+#check-answer-btn:hover {
+    background-color: #f0f0f0;
+}
+#check-answer-btn .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #a0c179;
+    transform: translateX(-100%);
+}
+#check-answer-btn .button-text {
+    position: relative;
+    z-index: 1;
+}
+.check-answer-guide {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 8px;
+    transition: color 0.3s ease;
+}
+
+#multiplication-container {
+    margin: 20px auto;
+    display: inline-block;
+    text-align: right;
+    font-size: 2.2em;
+    line-height: 1.2;
+    padding: 40px 30px 40px 30px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    position: relative;
+    user-select: none;
+    overflow: visible;
+}
+.num-row {
+    white-space: nowrap;
+    position: relative;
+    margin-bottom: -0.5em;
+}
+#num1-row {
+    margin-top: 0.8em;
+    margin-bottom: 0.1em;
+}
+#num2-row {
+    margin-bottom: 0.5em !important;
+}
+
+.num-row.multi-line {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+}
+.num-digit, .num-op {
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    line-height: 1.4em;
+    text-align: center;
+    position: relative;
+    color: #333;
+    margin: 0 0.05em;
+}
+.num-op {
+    font-weight: bold;
+    color: #333;
+}
+.num-decimal-placeholder {
+    width: 0.1em;
+    margin: 0;
+    color: transparent;
+    font-weight: bold;
+}
+.decimal-point {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.2em;
+    color: #000;
+    font-weight: bold;
+}
+.input-digit-box {
+    width: 1.4em;
+    height: 1.4em;
+    display: inline-block;
+    border: 1px solid #aaa;
+    margin: 0 0.05em;
+    text-align: center;
+    font-size: 1em;
+    line-height: 1.4em;
+    cursor: text;
+    background-color: #fafafa;
+    color: #333;
+    font-weight: bold;
+    outline: none;
+    box-sizing: border-box;
+    z-index: 10;
+    position: relative;
+    vertical-align: top;
+    -moz-appearance: textfield;
+}
+.input-digit-box::-webkit-outer-spin-button,
+.input-digit-box::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.input-digit-box.active {
+    border: 2px solid #4b8134;
+    background-color: #e6ffe6;
+}
+.multiplication-line {
+    height: 2px;
+    background-color: #333;
+    margin: 5px 0 5px 0;
+    border-radius: 1px;
+}
+.multiplication-line.plus {
+    margin-top: 10px;
+}
+.result-decimal-point {
+    position: absolute;
+    bottom: 0px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    z-index: 20;
+}
+.result-decimal-point.selected {
+    background-color: #dc3545;
+}
+
+#practice-guide-container,
+.arrow-container {
+    display: none !important;
+}
+
+.carry-input-row {
+    position: absolute;
+    right: auto;
+    left: auto;
+    white-space: nowrap;
+    z-index: 20;
+    line-height: 1.2;
+    text-align: right;
+    width: 100%;
+}
+.carry-input-row.row-1 {
+    top: 20px;
+}
+.carry-input-row.row-2 {
+    top: 50px;
+}
+
+.carry-digit-box {
+    width: 1.2em;
+    height: 1.2em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin: 0 0.25em;
+    text-align: center;
+    font-size: 0.7em;
+    line-height: 1.0em;
+    color: #888;
+    font-weight: bold;
+    outline: none;
+    box-sizing: border-box;
+    cursor: text;
+    border-radius: 4px;
+}
+.carry-digit-box.active {
+    border: 2px solid #aaa;
+    background-color: #f0f0f0;
+}
+.carry-placeholder {
+    display: inline-block;
+    width: 1.4em;
+    height: 1.0em;
+    margin: 0 0.05em;
+}
+
+#carry-guide-bubble {
+    position: absolute;
+    top: 25px;
+    right: auto;
+    left: auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #666;
+    line-height: 1.3;
+    width: 110px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    z-index: 25;
+}
+#carry-guide-bubble::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #fff;
+    border-right: none;
+    z-index: 10;
+}
+#carry-guide-bubble::before {
+    content: '';
+    position: absolute;
+    right: -11px;
+    left: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-left: 11px solid #ddd;
+    border-right: none;
+    z-index: -1;
+}
+
+
+#final-result-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+#final-result-title {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+.final-result-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 30px auto;
+}
+.result-left {
+    flex: 1;
+    padding-right: 30px;
+    border-right: 1px solid #ddd;
+    text-align: center;
+}
+.result-right {
+    flex: 1;
+    padding-left: 30px;
+    text-align: left;
+}
+.result-left p, .result-right p {
+    font-size: 1.1em;
+    margin: 15px 0;
+}
+.result-left p {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+#final-accuracy {
+    font-size: 4em;
+    font-weight: bold;
+    color: #4b8134;
+    margin-top: 0;
+    line-height: 1.1;
+}
+.result-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.result-buttons.practice-only { justify-content: center; }
+.result-buttons.practice-only #show-hof-btn { display: none !important; }
+.result-buttons.practice-only #restart-btn { margin: 0 auto; }
+.score-display { display: none; }
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 100;
+}
+#hof-popup-overlay {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#result-popup-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+.popup-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 80%;
+    max-width: 450px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.popup-hof {
+    max-width: 600px;
+    padding: 20px;
+}
+.popup-box .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+.result-popup #popup-main-message {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+.correct { color: #28a745; }
+.incorrect { color: #dc3545; }
+
+.popup-qr {
+    padding: 15px;
+    max-width: 210px;
+}
+#qr-popup-overlay .popup-qr img {
+    max-width: 150px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+}
+
+.hof-input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0 15px 0;
+    width: 100%;
+}
+#hof-initial {
+    width: 80px;
+    height: 35px;
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+#hof-submit-btn {
+    padding: 8px 15px;
+    font-size: 1em;
+}
+.hof-columns {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    width: 100%;
+    justify-content: center;
+}
+.hof-column {
+    flex: 1;
+    min-width: 45%;
+}
+.hof-column h3 {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 5px;
+}
+.hof-table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: none;
+    border-radius: 0;
+}
+.hof-column table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+.hof-column th, .hof-column td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+.hof-column th {
+    background-color: #f8f8f8;
+    color: #666;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+}
+.hof-column tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+.hof-column tr:hover {
+    background-color: #f0f8ff;
+}
+.hof-column td:nth-child(1) { width: 20%; font-weight: bold; }
+.hof-column td:nth-child(2) { width: 40%; }
+.hof-column td:nth-child(3) { width: 40%; font-weight: bold; color: #333; }
+
+.hof-column table tbody .top-scorer td:nth-child(2) {
+    color: #4b8134 !important;
+    font-weight: bold;
+}
+.hof-column table tbody tr:not(.top-scorer) td:nth-child(2) {
+    font-weight: bold;
+}
+.hof-column table tbody .rank-1 td:nth-child(2) {
+    color: #d4af37 !important;
+    text-shadow: 0 0 4px #fff, 0 0 6px #ff0;
+}
+.hof-column table tbody .rank-2 td:nth-child(2) {
+    color: #c0c0c0 !important;
+    text-shadow: 0 0 3px #fff;
+}
+.hof-column table tbody .rank-3 td:nth-child(2) {
+    color: #cd7f32 !important;
+    text-shadow: 0 0 3px #fff;
+}
+.hof-column table tbody td[colspan="3"] {
+    color: #888;
+    font-weight: normal;
+}
+.hof-column table tbody tr:nth-child(1) td:not(.top-scorer td) {
+    color: #333;
+}
+
+.popup-hof > div:first-child {
+    margin-bottom: 0 !important;
+}
+#hof-reset-message {
+    margin-top: 5px !important;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #ccc;
+    text-align: center;
+}
+.mobile-title, .mobile-home { display: none; }
+.desktop-title, .desktop-home { display: inline; }
+@media (max-width: 768px) {
+    .main-layout { flex-direction: column; }
+    .left-panel {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 0;
+    }
+    .right-panel {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .option-buttons { flex-direction: row; }
+    .final-result-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+    .result-left {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        width: 100%;
+        padding: 0 0 20px 0;
+    }
+    .result-right {
+        padding: 20px 0 0 0;
+        width: 100%;
+        text-align: center;
+    }
+    .hof-columns { flex-direction: column; }
+    .hof-column { min-width: 100%; }
+}
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+    h1 { font-size: 1.6em; }
+    .mobile-title { display: inline; }
+    .desktop-title { display: none; }
+    .desktop-home { display: none; }
+    .mobile-home { display: inline; }
+
+    .option-buttons button {
+        padding: 10px 10px;
+        min-width: unset;
+    }
+    #multiplication-container {
+        font-size: 1.8em;
+        width: 90%;
+        padding: 15px 20px 30px 20px;
+    }
+    .mode-buttons button span {
+        display: block;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <button id="qr-code-btn" class="secondary-btn">QR 코드</button>
+    
+    <div id="mode-selection-page" style="display: flex;">
+        <h1>
+            <span class="desktop-title">소수의 곱셈 완전 정복</span>
+            <span class="mobile-title">소수의 곱셈<br>완전 정복</span>
+        </h1>
+        <h2>모드를 선택하세요.</h2>
+        <div class="mode-buttons">
+            <div class="mode-option">
+                <button id="classic-mode-btn">🎓 클래식 <span>모드</span></button>
+                <small class="mode-description">
+                    무작위로 생성되는 문제를<br>원하는 만큼 연습하세요!
+                </small>
+            </div>
+            <div class="mode-option">
+                <button id="time-attack-mode-btn">⏱️ 타임어택 <span>모드</span></button>
+                <small class="mode-description">
+                    정해진 시간 동안<br>빠르고 정확하게!
+                </small>
+            </div>
+        </div>
+    </div>
+    
+    <div id="setup-page" style="display: none;">
+        <button id="back-to-mode-select-btn" class="home-button">
+            <span class="desktop-home">모드 선택으로</span>
+            <span class="mobile-home">🏠</span>
+        </button>
+        <h1>
+            <span class="desktop-title">소수의 곱셈 완전 정복</span>
+            <span class="mobile-title">소수의 곱셈<br>완전 정복</span>
+        </h1>
+        <h2 style="text-align: center;">문제 유형 및 설정</h2>
+
+        <div class="main-layout">
+            <div class="left-panel">
+                <div class="setting-group">
+                    <h3>문제 유형 선택</h3>
+                    <div id="type-select" class="option-buttons">
+                        <button data-type="intXdec" class="selected">자연수 x 소수</button>
+                        <button data-type="decXint">소수 x 자연수</button>
+                        <button data-type="decXdec">소수 x 소수</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <h3>난이도 선택</h3>
+                    <div id="difficulty-select" class="option-buttons">
+                        <button data-difficulty="practice">연습</button>
+                        <button data-difficulty="1" class="selected">★</button>
+                        <button data-difficulty="2">★★</button>
+                    </div>
+                </div>
+            </div>
+            <div class="right-panel">
+                <div class="settings-wrapper">
+                    <div id="classic-settings">
+                        <div class="setting-group">
+                            <h3>문제 개수 설정</h3>
+                            <small style="margin-bottom: 10px;">(최소 5, 최대 50문제)</small>
+                            <div id="quantity-control">
+                                <button id="quantity-minus">-</button>
+                                <span id="problem-quantity" class="quantity-display">5</span>
+                                <button id="quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="time-attack-settings" style="display: none;">
+                        <div class="setting-group">
+                            <h3>도전 시간 설정</h3>
+                            <div id="time-control" style="margin-top: 10px;">
+                                <button id="time-minus">&lt;</button>
+                                <span id="time-limit-display" class="quantity-display">3분</span>
+                                <button id="time-plus">&gt;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="settings-overlay" style="display: none;">
+                        <p id="overlay-message"></p>
+                    </div>
+                </div>
+                <div class="setting-group start-btn-container">
+                    <button id="start-quiz-btn" class="primary-btn">시작!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="problem-page" style="display: none;">
+        <div class="problem-header">
+            <button class="home-button">
+                <span class="desktop-home">🏠 첫 페이지로</span>
+                <span class="mobile-home">🏠</span>
+            </button>
+            <h2 id="problem-number">1번째 문제</h2>
+            <div id="timer-display"></div>
+            <div id="problem-counter-display"></div>
+        </div>
+        <p id="problem-instruction">세로셈을 완성하고 소수점 위치를 표시하세요.</p>
+        
+        <div id="multiplication-container">
+        </div>
+
+        <div id="practice-guide-container">
+        </div>
+        
+        <div class="problem-footer">
+            <div id="check-answer-container">
+                <button id="check-answer-btn" class="primary-btn">
+                    <span class="progress-bar"></span>
+                    <span class="button-text">정답 확인하기</span>
+                </button>
+                <button id="next-problem-btn" class="primary-btn" style="display: none;">다음 문제 도전하기</button>
+                <small class="check-answer-guide">빈 칸과 소수점을 모두 입력 후 꾹 눌러주세요!</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="final-result-page" style="display: none;">
+        <h2 id="final-result-title">학습 완료</h2>
+        <div class="final-result-layout">
+            <div class="result-left">
+                <p>나의 정확도</p>
+                <div id="final-accuracy">0%</div>
+            </div>
+            <div class="result-right">
+                <p>한 번에 맞춘 문제: <span id="correct-count">0</span>개</p>
+                <p>다시 도전해 맞춘 문제: <span id="retried-count">0</span>개</p>
+                <p id="time-attack-avg-time" class="score-display">문제당 평균 속도: <span id="avg-time-display">0</span>초</p>
+                <p class="score-display">최종 점수: <span id="final-score">0</span>점</p>
+            </div>
+        </div>
+        <div class="result-buttons">
+            <button id="restart-btn" class="primary-btn">새로운 학습 시작하기</button>
+            <button id="show-hof-btn" class="secondary-btn">명예의 전당 등록하기</button>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    Copyright © 2025 휴르쌤. All rights reserved.
+</div>
+
+<div id="result-popup-overlay" class="popup-overlay" style="display: none;">
+    <div class="result-popup popup-box">
+        <button class="close-btn" onclick="closePopup()">&times;</button>
+        <div class="popup-content">
+            <p id="popup-main-message"></p>
+            <p id="popup-detail-message" style="display: none;"></p>
+            <button id="popup-next-btn" class="primary-btn" onclick="nextProblem()" style="margin-top: 20px; display: none;">다음 문제 도전하기</button>
+        </div>
+    </div>
+</div>
+
+<div id="qr-popup-overlay" class="popup-overlay" style="display: none;">
+    <div class="popup-qr popup-box">
+        <button class="close-btn" onclick="closeQrPopup()">&times;</button>
+        <img src="https://i.imgur.com/XT0OsoI.png" alt="QR Code">
+    </div>
+</div>
+
+<div id="hof-popup-overlay" class="popup-overlay" style="display: none;">
+    <div class="popup-hof popup-box">
+        <button class="close-btn" onclick="closeHofPopup()">&times;</button>
+        <div>
+            <h3 style="margin-top: 0;">🏆 명예의 전당 🏆</h3>
+            <small id="hof-reset-message" style="display: block; color: #888; font-size: 1em;">
+                순위는 자정마다 초기화됩니다.
+            </small>
+            <div class="hof-input-group">
+                <input type="text" id="hof-initial" placeholder="AAA" maxlength="3" oninput="this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '')" style="margin: 0;">
+                <button id="hof-submit-btn" class="primary-btn" style="margin: 0;">등록</button>
+            </div>
+            <div id="hof-message"></div>
+        </div>
+        <div class="hof-columns">
+            <div class="hof-column">
+                <h3>🎓 클래식 모드</h3>
+                <div class="hof-table-container">
+                    <table id="hof-table-classic">
+                        <thead>
+                            <tr>
+                                <th>순위</th>
+                                <th>이니셜</th>
+                                <th>점수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="hof-column">
+                <h3>⏱️ 타임어택 모드</h3>
+                <div class="hof-table-container">
+                    <table id="hof-table-timeattack">
+                        <thead>
+                            <tr>
+                                <th>순위</th>
+                                <th>이니셜</th>
+                                <th>점수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const webAppUrl = 'https://point.bbglara.workers.dev/';
+    const blockedWords = ['SEX', 'FUK', 'KIN', 'GAY', 'FUC', 'ASS', 'FUX', 'WTF'];
+
+    const _0x443d44=_0x3c66;(function(_0x4859a3,_0x26ab64){const _0x480b66=_0x3c66,_0x1f0d14=_0x4859a3();while(!![]){try{const _0x371f7f=-parseInt(_0x480b66(0x157))/0x1*(-parseInt(_0x480b66(0x13f))/0x2)+parseInt(_0x480b66(0x187))/0x3+-parseInt(_0x480b66(0x1d5))/0x4+parseInt(_0x480b66(0x182))/0x5+parseInt(_0x480b66(0x138))/0x6*(-parseInt(_0x480b66(0x161))/0x7)+-parseInt(_0x480b66(0x117))/0x8*(-parseInt(_0x480b66(0x199))/0x9)+parseInt(_0x480b66(0x1c4))/0xa*(-parseInt(_0x480b66(0x132))/0xb);if(_0x371f7f===_0x26ab64)break;else _0x1f0d14['push'](_0x1f0d14['shift']());}catch(_0x107770){_0x1f0d14['push'](_0x1f0d14['shift']());}}}(_0x3d59,0x9a375));const timeOptions=[0x3,0x5,0x7];let gameMode=_0x443d44(0x1fa),timeLimitInMinutes=0x3,remainingTime=0x0,timerInterval=null,selectedType='intXdec',selectedDifficulty='1',totalProblems=0x5,currentProblem=0x0,problemList=[],score={'results':[]},currentProblemAttempts=0x0,finalAccuracyValue=0x0,finalScoreValue=0x0,hasSubmittedScore=![],isExitingIntentionally=![],timeAttackProblemStartTimestamp=[],timeAttackProblemTimeSpent=[];const PROBLEM_BASE_TIMES={'intXdec':{'1':0x14,'2':0x1e},'decXint':{'1':0x14,'2':0x1e},'decXdec':{'1':0x14,'2':0x1e}};let currentProblemData=null,maxDigits=0x0,firstNumLength=0x0;const allPages=['mode-selection-page',_0x443d44(0x1d3),_0x443d44(0x173),_0x443d44(0x1d6)];function showPage(_0x545df8){const _0xf670e8=_0x443d44;allPages[_0xf670e8(0x1f0)](_0xb8a8f2=>{const _0x173712=_0xf670e8,_0x87e87f=document[_0x173712(0x16a)](_0xb8a8f2);if(_0x87e87f)_0x87e87f['style']['display']='none';});const _0xa64b7c=document['getElementById'](_0x545df8);if(_0xa64b7c){const _0x47ca94=_0x545df8===_0xf670e8(0x1f2)||_0x545df8===_0xf670e8(0x1d3)?_0xf670e8(0x1d2):_0xf670e8(0x124);_0xa64b7c[_0xf670e8(0x1ff)][_0xf670e8(0x1b8)]=_0x47ca94;}const _0x3b57f0=document[_0xf670e8(0x16a)](_0xf670e8(0x15b));if(_0x3b57f0)_0x3b57f0[_0xf670e8(0x1ff)][_0xf670e8(0x1b8)]=_0x545df8===_0xf670e8(0x1f2)||_0x545df8===_0xf670e8(0x1d3)?_0xf670e8(0x124):'none';}function resetGame(){const _0x4045be=_0x443d44;stopTimer(),clearGameState(),selectedType=_0x4045be(0x194),totalProblems=0x5,currentProblem=0x0,selectedDifficulty='1',hasSubmittedScore=![],gameMode='classic',timeLimitInMinutes=0x3,remainingTime=0x0,problemList=[],score={'results':[]},currentProblemAttempts=0x0,finalScoreValue=0x0,currentProblemData=null,timeAttackProblemStartTimestamp=[],timeAttackProblemTimeSpent=[],document['getElementById'](_0x4045be(0x1dc))[_0x4045be(0x1b9)]='5',document[_0x4045be(0x16a)]('time-limit-display')['textContent']='3분',document[_0x4045be(0x16a)](_0x4045be(0x167))[_0x4045be(0x1ff)][_0x4045be(0x1b8)]=_0x4045be(0x16f),document[_0x4045be(0x16a)](_0x4045be(0x123))[_0x4045be(0x1ff)][_0x4045be(0x1b8)]=_0x4045be(0x16f),document[_0x4045be(0x1ca)]('#type-select\x20button')['forEach'](_0x327347=>_0x327347[_0x4045be(0xf9)][_0x4045be(0x1b3)](_0x4045be(0xf7))),document[_0x4045be(0x201)]('#type-select\x20button[data-type=\x22intXdec\x22]')[_0x4045be(0xf9)][_0x4045be(0x17f)](_0x4045be(0xf7)),document[_0x4045be(0x1ca)](_0x4045be(0x1c7))[_0x4045be(0x1f0)](_0xe4e011=>_0xe4e011['classList'][_0x4045be(0x1b3)](_0x4045be(0xf7))),document[_0x4045be(0x201)](_0x4045be(0x1e7))[_0x4045be(0xf9)][_0x4045be(0x17f)](_0x4045be(0xf7)),document[_0x4045be(0x16a)](_0x4045be(0x1ab))[_0x4045be(0x1ff)][_0x4045be(0x1b8)]='block',document[_0x4045be(0x16a)](_0x4045be(0x1c6))[_0x4045be(0x1ff)][_0x4045be(0x1b8)]=_0x4045be(0x16f),updateSettingsOverlay();}function handleTypeSelect(_0x2df749){const _0x94f8d8=_0x443d44;document[_0x94f8d8(0x1ca)](_0x94f8d8(0x105))[_0x94f8d8(0x1f0)](_0x54c149=>_0x54c149[_0x94f8d8(0xf9)][_0x94f8d8(0x1b3)](_0x94f8d8(0xf7))),_0x2df749[_0x94f8d8(0xf6)][_0x94f8d8(0xf9)][_0x94f8d8(0x17f)]('selected'),selectedType=_0x2df749[_0x94f8d8(0xf6)][_0x94f8d8(0x19b)](_0x94f8d8(0x141));}function handleDifficultySelect(_0xe6b6c6){const _0x319a1c=_0x443d44;document[_0x319a1c(0x1ca)](_0x319a1c(0x1c7))['forEach'](_0x441666=>_0x441666[_0x319a1c(0xf9)][_0x319a1c(0x1b3)]('selected')),_0xe6b6c6['currentTarget'][_0x319a1c(0xf9)]['add'](_0x319a1c(0xf7)),selectedDifficulty=_0xe6b6c6[_0x319a1c(0xf6)]['getAttribute'](_0x319a1c(0x1aa)),updateSettingsOverlay();}function changeQuantity(_0x3d6ff0){const _0xaa3e9f=_0x443d44;if(selectedDifficulty===_0xaa3e9f(0x129))return;const _0xa5de7=parseInt(document[_0xaa3e9f(0x16a)](_0xaa3e9f(0x1dc))['textContent']);let _0x15a231=_0xa5de7+_0x3d6ff0;if(_0x15a231<0x5)_0x15a231=0x5;if(_0x15a231>0x32)_0x15a231=0x32;document[_0xaa3e9f(0x16a)]('problem-quantity')['textContent']=_0x15a231,totalProblems=_0x15a231;}function changeTimeLimit(_0x1f4e7d){const _0x422682=_0x443d44;if(selectedDifficulty===_0x422682(0x129))return;const _0x34da47=document[_0x422682(0x16a)](_0x422682(0x185)),_0x397f48=timeOptions[_0x422682(0x191)](timeLimitInMinutes);let _0x3b86ce=_0x397f48+_0x1f4e7d;if(_0x3b86ce<0x0)_0x3b86ce=timeOptions[_0x422682(0x10b)]-0x1;else{if(_0x3b86ce>=timeOptions['length'])_0x3b86ce=0x0;}timeLimitInMinutes=timeOptions[_0x3b86ce],_0x34da47[_0x422682(0x1b9)]=timeLimitInMinutes+'분';}function updateSettingsOverlay(){const _0x5a03fd=_0x443d44,_0x54cc47=document[_0x5a03fd(0x16a)](_0x5a03fd(0x168)),_0x1e6f29=document[_0x5a03fd(0x16a)](_0x5a03fd(0x186)),_0x520519=selectedDifficulty===_0x5a03fd(0x129),_0x178aed=document['getElementById']('quantity-control'),_0x3bde81=document[_0x5a03fd(0x16a)](_0x5a03fd(0x13b));if(_0x520519){_0x54cc47['style'][_0x5a03fd(0x1b8)]='flex';if(gameMode===_0x5a03fd(0x1fa)){_0x1e6f29[_0x5a03fd(0x18b)]=_0x5a03fd(0x1b7);if(_0x178aed)_0x178aed[_0x5a03fd(0x1ff)][_0x5a03fd(0x135)]=0.4;if(_0x3bde81)_0x3bde81['style'][_0x5a03fd(0x135)]=0x1;}else{_0x1e6f29['innerHTML']=_0x5a03fd(0x166);if(_0x178aed)_0x178aed['style'][_0x5a03fd(0x135)]=0x1;if(_0x3bde81)_0x3bde81[_0x5a03fd(0x1ff)]['opacity']=0.4;}}else{_0x54cc47[_0x5a03fd(0x1ff)][_0x5a03fd(0x1b8)]=_0x5a03fd(0x16f);if(_0x178aed)_0x178aed[_0x5a03fd(0x1ff)][_0x5a03fd(0x135)]=0x1;if(_0x3bde81)_0x3bde81[_0x5a03fd(0x1ff)][_0x5a03fd(0x135)]=0x1;gameMode===_0x5a03fd(0x1fa)?document[_0x5a03fd(0x16a)](_0x5a03fd(0x1dc))[_0x5a03fd(0x1b9)]=totalProblems:document[_0x5a03fd(0x16a)](_0x5a03fd(0x185))['textContent']=timeLimitInMinutes+'분';}}function selectGameMode(_0x28962b){const _0x146ce9=_0x443d44;gameMode=_0x28962b;const _0x2f23c3=document['getElementById'](_0x146ce9(0x1ab)),_0x376049=document[_0x146ce9(0x16a)]('time-attack-settings');gameMode===_0x146ce9(0x1fa)?(_0x2f23c3[_0x146ce9(0x1ff)][_0x146ce9(0x1b8)]=_0x146ce9(0x124),_0x376049[_0x146ce9(0x1ff)][_0x146ce9(0x1b8)]=_0x146ce9(0x16f)):(_0x2f23c3['style'][_0x146ce9(0x1b8)]=_0x146ce9(0x16f),_0x376049['style'][_0x146ce9(0x1b8)]=_0x146ce9(0x124)),updateSettingsOverlay(),showPage(_0x146ce9(0x1d3));}function getRandomInt(_0x5900c7,_0x251e18,_0xe69b95=!![],_0x12e91e=![]){const _0xd85b2e=_0x443d44;_0x5900c7=Math['ceil'](_0x5900c7),_0x251e18=Math[_0xd85b2e(0x10d)](_0x251e18);let _0x12caa9,_0x587ce1=0x0;while(_0x587ce1<0x32){_0x12caa9=Math['floor'](Math[_0xd85b2e(0x181)]()*(_0x251e18-_0x5900c7+0x1))+_0x5900c7;if(!_0xe69b95&&_0x12caa9%0xa===0x0&&_0x12caa9!==0x0){_0x587ce1++;continue;}return _0x12caa9;}return _0x12caa9;}function generateProblem(_0xad4e5d,_0x9befa4){const _0x8a0d36=_0x443d44;let _0x1913f3=0x0;if(_0x9befa4===_0x8a0d36(0x1a8))_0x1913f3=0x3;else{if(_0x9befa4===_0x8a0d36(0x19f))_0x1913f3=0x4;}const _0x2386f4=_0xe2cfeb=>{const _0x3c15a3=_0x8a0d36,_0x6ce410=_0xe2cfeb[_0x3c15a3(0x1cf)](),_0x4c10ea=_0x6ce410[_0x3c15a3(0x191)]('.');return _0x4c10ea===-0x1?0x0:_0x6ce410[_0x3c15a3(0x10b)]-_0x4c10ea-0x1;},_0x2cf4a0=(_0x29253e,_0x4160f2,_0x2a2777,_0x49dc16=!![])=>{const _0x4e69ef=_0x8a0d36;let _0x1b8068=0x0,_0x5d2d92=0x0;while(_0x5d2d92<0x64){let _0x44903f=Math['random']()*(_0x4160f2-_0x29253e)+_0x29253e;_0x1b8068=parseFloat(_0x44903f[_0x4e69ef(0x1d4)](_0x2a2777));if(_0x1b8068['toString']()[_0x4e69ef(0x178)]('0')&&_0x1b8068[_0x4e69ef(0x1cf)]()[_0x4e69ef(0x163)]('.')){_0x5d2d92++;continue;}if(_0x1b8068>=_0x29253e&&_0x1b8068<=_0x4160f2){if(_0x49dc16&&Number[_0x4e69ef(0x114)](_0x1b8068)){if(_0x2a2777>0x0)continue;}if(_0x2a2777===0x0&&_0x1b8068%0xa===0x0&&_0x1b8068!==0x0){_0x5d2d92++;continue;}return _0x1b8068;}_0x5d2d92++;}return _0x1b8068;},_0x3bc4ca=(_0x42b9da=0x64)=>{const _0x931e4e=_0x8a0d36;for(let _0x2acbb1=0x0;_0x2acbb1<_0x42b9da;_0x2acbb1++){let _0x1ea358,_0x5dab0f,_0x496ec2=_0x9befa4[_0x931e4e(0x163)](_0x931e4e(0x129))?'1':_0x9befa4;const _0x1a2286=_0x496ec2==='1';if(_0x1a2286){if(_0xad4e5d===_0x931e4e(0x194))_0x1ea358=getRandomInt(0xb,0x31,![]),_0x5dab0f=_0x2cf4a0(2.1,4.9,0x1);else{if(_0xad4e5d===_0x931e4e(0x1f7))_0x1ea358=_0x2cf4a0(2.1,4.9,0x1),_0x5dab0f=getRandomInt(0xb,0x31,![]);else _0xad4e5d===_0x931e4e(0x102)&&(_0x1ea358=_0x2cf4a0(2.1,9.9,0x1),_0x5dab0f=_0x2cf4a0(2.1,9.9,0x1));}}else{if(_0x496ec2==='2'){if(_0xad4e5d===_0x931e4e(0x194))Math[_0x931e4e(0x181)]()<0.5?(_0x1ea358=getRandomInt(0x64,0x3e7,![]),_0x5dab0f=_0x2cf4a0(2.6,4.9,0x1)):(_0x1ea358=getRandomInt(0xb,0x63,![]),_0x5dab0f=Math[_0x931e4e(0x181)]()<0.5?_0x2cf4a0(1.01,9.99,0x2):_0x2cf4a0(10.1,99.9,0x1));else{if(_0xad4e5d===_0x931e4e(0x1f7))Math[_0x931e4e(0x181)]()<0.5?(_0x1ea358=_0x2cf4a0(2.6,4.9,0x1),_0x5dab0f=getRandomInt(0x64,0x3e7,![])):(_0x1ea358=Math[_0x931e4e(0x181)]()<0.5?_0x2cf4a0(1.01,9.99,0x2):_0x2cf4a0(10.1,99.9,0x1),_0x5dab0f=getRandomInt(0xb,0x63,![]));else _0xad4e5d==='decXdec'&&(_0x1ea358=_0x2cf4a0(2.1,9.9,0x1),_0x5dab0f=Math[_0x931e4e(0x181)]()<0.5?_0x2cf4a0(1.01,9.99,0x2):_0x2cf4a0(10.1,99.9,0x1));}}}if(_0x1ea358===undefined||_0x5dab0f===undefined||_0x1ea358<=0x0||_0x5dab0f<=0x0)continue;const _0x3c99e2=_0x1ea358*_0x5dab0f,_0x36cc47=_0x2386f4(_0x1ea358),_0x831a56=_0x2386f4(_0x5dab0f),_0x1bea32=_0x36cc47+_0x831a56,_0x177356=_0x3c99e2*0xa**_0x1bea32,_0x201fec=_0x177356[_0x931e4e(0x1d4)](0x0);if(_0x9befa4[_0x931e4e(0x1c1)]('practice')){if(_0x201fec[_0x931e4e(0x10b)]!==_0x1913f3)continue;}if(_0x1a2286&&_0xad4e5d!==_0x931e4e(0x102)){const _0x23efa8=_0xad4e5d===_0x931e4e(0x194)?parseInt(_0x5dab0f[_0x931e4e(0x1cf)]()['replace']('.','')[_0x931e4e(0x1eb)](-0x1)):parseInt(_0x1ea358[_0x931e4e(0x1cf)]()[_0x931e4e(0x18a)]('.','')['slice'](-0x1)),_0x550dd4=_0xad4e5d===_0x931e4e(0x194)?parseInt(_0x1ea358[_0x931e4e(0x1cf)]()):parseInt(_0x5dab0f['toString']());let _0x5bccf7=0x0,_0x533ef8=_0x550dd4;while(_0x533ef8>0x0){const _0x1d77ea=_0x533ef8%0xa,_0x10ff4d=_0x1d77ea*_0x23efa8;_0x5bccf7=Math[_0x931e4e(0x155)](_0x5bccf7,Math[_0x931e4e(0x10d)](_0x10ff4d/0xa)),_0x533ef8=Math[_0x931e4e(0x10d)](_0x533ef8/0xa);}if(_0x5bccf7>0x4)continue;}if(!_0x1a2286&&_0x201fec['endsWith']('0')){if(Math[_0x931e4e(0x1e4)](_0x3c99e2*0xa**_0x1bea32)%0xa===0x0)continue;}return{'num1':_0x1ea358,'num2':_0x5dab0f,'num1DecPos':_0x36cc47,'num2DecPos':_0x831a56,'answer':_0x3c99e2,'decimalPointCount':_0x1bea32,'type':_0xad4e5d,'difficulty':_0x9befa4[_0x931e4e(0x163)](_0x931e4e(0x129))?_0x931e4e(0x129):_0x9befa4};}return null;};return _0x3bc4ca(0xc8);}function generatePracticeProblems(_0x41e94b){const _0x13a42c=_0x443d44,_0x20eacb=[];let _0x4e8504=null;while(!_0x4e8504){_0x4e8504=generateProblem(_0x41e94b,_0x13a42c(0x1a8));}_0x20eacb['push'](_0x4e8504);let _0x53d1e2=null,_0x47065a=0x0;while((!_0x53d1e2||_0x53d1e2[_0x13a42c(0x1ce)]===_0x4e8504['num1']&&_0x53d1e2['num2']===_0x4e8504[_0x13a42c(0x128)])&&_0x47065a<0xc8){_0x53d1e2=generateProblem(_0x41e94b,_0x13a42c(0x1a8)),_0x47065a++;}if(!_0x53d1e2)_0x53d1e2=_0x4e8504;_0x20eacb[_0x13a42c(0x1bf)](_0x53d1e2);let _0x2bb5b5=null;while(!_0x2bb5b5){_0x2bb5b5=generateProblem(_0x41e94b,_0x13a42c(0x19f));}return _0x20eacb['push'](_0x2bb5b5),_0x20eacb;}function startQuiz(){const _0x44c5d7=_0x443d44;currentProblem=0x0,score={'results':[]},currentProblemAttempts=0x0,currentProblemData=null,problemList=[],hasSubmittedScore=![],timeAttackProblemStartTimestamp=[],timeAttackProblemTimeSpent=[];if(selectedDifficulty==='practice'){if(gameMode==='timeAttack')timeLimitInMinutes=0x2;totalProblems=0x3,problemList=generatePracticeProblems(selectedType);}else{if(gameMode===_0x44c5d7(0x1fa)){totalProblems=parseInt(document[_0x44c5d7(0x16a)]('problem-quantity')[_0x44c5d7(0x1b9)]);let _0x457c22=0x0;while(problemList['length']<totalProblems&&_0x457c22<totalProblems*0x14){const _0x5b6bff=generateProblem(selectedType,selectedDifficulty);if(_0x5b6bff)problemList['push'](_0x5b6bff);_0x457c22++;}}else{for(let _0x1891df=0x0;_0x1891df<0xa;_0x1891df++){const _0x4e5130=generateProblem(selectedType,selectedDifficulty);if(_0x4e5130)problemList[_0x44c5d7(0x1bf)](_0x4e5130);}totalProblems=Infinity;}}if(problemList[_0x44c5d7(0x10b)]===0x0){alert(_0x44c5d7(0x1de));return;}showPage(_0x44c5d7(0x173));if(gameMode===_0x44c5d7(0x188)&&(selectedDifficulty!==_0x44c5d7(0x129)||timeLimitInMinutes===0x2))startTimer();loadProblem();}function loadProblem(){const _0x5e1317=_0x443d44,_0x28ae56=selectedDifficulty==='practice',_0x2145d3=gameMode===_0x5e1317(0x188);if(currentProblem>=problemList[_0x5e1317(0x10b)]){if(_0x2145d3&&!timerInterval)showFinalResult();else{if(!_0x2145d3)showFinalResult();}return;}currentProblemAttempts=0x0;const _0x5e2908=problemList[currentProblem];if(!_0x5e2908){showFinalResult();return;}currentProblemData=_0x5e2908;const _0x1f586f=document[_0x5e1317(0x16a)]('timer-display'),_0x9550c6=document['getElementById']('problem-counter-display');_0x2145d3?(_0x9550c6[_0x5e1317(0x1ff)][_0x5e1317(0x1b8)]=_0x5e1317(0x16f),_0x1f586f[_0x5e1317(0x1ff)][_0x5e1317(0x1b8)]=_0x5e1317(0x124),timeAttackProblemStartTimestamp[currentProblem]=Date[_0x5e1317(0x15c)]()):(_0x9550c6[_0x5e1317(0x1ff)]['display']=_0x5e1317(0x124),_0x1f586f[_0x5e1317(0x1ff)][_0x5e1317(0x1b8)]=_0x5e1317(0x16f),_0x9550c6[_0x5e1317(0x1b9)]=_0x5e1317(0x139)+(problemList[_0x5e1317(0x10b)]-(currentProblem+0x1))+'개');let _0x507168=currentProblem+0x1+_0x5e1317(0x144);document['getElementById']('problem-number')['innerHTML']=_0x507168,document[_0x5e1317(0x16a)](_0x5e1317(0x16d))[_0x5e1317(0x1b9)]=_0x5e1317(0x149),document[_0x5e1317(0x16a)](_0x5e1317(0x11e))[_0x5e1317(0x1ff)]['display']=_0x5e1317(0x124),document['getElementById'](_0x5e1317(0xf5))['style'][_0x5e1317(0x1b8)]='none',renderMultiplicationTable(_0x5e2908['num1'],_0x5e2908['num2'],_0x28ae56),document[_0x5e1317(0x201)](_0x5e1317(0x108))[_0x5e1317(0x1b9)]=_0x5e1317(0x1e8);if(_0x2145d3&&currentProblem+0x1>=problemList[_0x5e1317(0x10b)]&&!_0x28ae56){const _0x4fca06=generateProblem(selectedType,selectedDifficulty);if(_0x4fca06)problemList[_0x5e1317(0x1bf)](_0x4fca06);}saveGameState();}function renderMultiplicationTable(_0x2a76c4,_0x290ec8,_0x2b91a9){const _0x3dcd58=_0x443d44,_0x2b644f=document['getElementById'](_0x3dcd58(0x158));_0x2b644f[_0x3dcd58(0x18b)]='',document['getElementById'](_0x3dcd58(0x198))[_0x3dcd58(0x18b)]='';const _0x4ec507=_0x2a76c4[_0x3dcd58(0x1cf)](),_0x14361d=_0x290ec8[_0x3dcd58(0x1cf)](),_0xf49c52=_0x4ec507[_0x3dcd58(0x18a)]('.',''),_0x108fff=_0x14361d['replace']('.',''),_0x246ce0=_0x4ec507[_0x3dcd58(0x191)]('.')>-0x1?_0x4ec507[_0x3dcd58(0x10b)]-_0x4ec507[_0x3dcd58(0x191)]('.')-0x1:0x0,_0x1d8314=_0x14361d[_0x3dcd58(0x191)]('.')>-0x1?_0x14361d['length']-_0x14361d[_0x3dcd58(0x191)]('.')-0x1:0x0,_0x140596=_0x2a76c4*_0x290ec8,_0x12de66=(_0x140596*0xa**(_0x246ce0+_0x1d8314))['toFixed'](0x0),_0x453fc3=_0x12de66[_0x3dcd58(0x10b)],_0x27d192=_0xf49c52['length']+_0x108fff['toString']()[_0x3dcd58(0x10b)];maxDigits=Math[_0x3dcd58(0x155)](_0x453fc3,_0x27d192)+0x1;let _0x50166c=0x0;const _0x74f953=_0xf49c52[_0x3dcd58(0x10b)],_0x3af97d=_0x108fff['length'],_0x312785=maxDigits-0x1-_0x74f953;let _0x34a09c='';const _0x1c5f10=selectedDifficulty===_0x3dcd58(0x129)||selectedDifficulty==='1',_0x31eb42=Math[_0x3dcd58(0x12b)](_0x3af97d,0x2);if(_0x1c5f10&&_0x74f953>=0x2){let _0xa3d1d6=_0x3dcd58(0x115);_0x34a09c+=_0xa3d1d6;for(let _0x1e388f=0x0;_0x1e388f<_0x31eb42;_0x1e388f++){let _0x36f69d=_0x3dcd58(0x147)+(_0x1e388f+0x1)+_0x3dcd58(0x130)+(_0x1e388f+0x1)+'\x22>';_0x36f69d+=_0x3dcd58(0x170);for(let _0xca5c60=0x0;_0xca5c60<_0x312785;_0xca5c60++){_0x36f69d+=_0x3dcd58(0x13e);}const _0x4b1265=_0x74f953,_0x40fcbd=0x2,_0xe10173=_0x4b1265-_0x40fcbd;for(let _0x26ae34=0x0;_0x26ae34<_0xe10173;_0x26ae34++){_0x36f69d+=_0x3dcd58(0x13e);}for(let _0x4aad79=0x0;_0x4aad79<_0x40fcbd;_0x4aad79++){_0x36f69d+='<input\x20type=\x22text\x22\x20class=\x22input-digit-box\x20carry-digit-box\x20carry-input\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20data-row=\x22'+(_0x1e388f+0x1)+'\x22\x20data-col=\x22'+_0x4aad79+_0x3dcd58(0x1e6)+_0x50166c+_0x3dcd58(0x1c5),_0x50166c++;}const _0x199c24=0x1;for(let _0x2f532b=0x0;_0x2f532b<_0x199c24;_0x2f532b++){_0x36f69d+=_0x3dcd58(0x13e);}const _0x3ff844=_0x14361d[_0x3dcd58(0x163)]('.')?_0x14361d[_0x3dcd58(0x12a)]('.')[0x1][_0x3dcd58(0x10b)]:0x0;for(let _0x1e8ce2=0x0;_0x1e8ce2<_0x3ff844;_0x1e8ce2++){_0x36f69d+=_0x3dcd58(0x13e);}_0x36f69d+=_0x3dcd58(0x156),_0x34a09c+=_0x36f69d;}}let _0x283952='<div\x20class=\x22num-row\x22\x20id=\x22num1-row\x22>';_0x283952+=_0x3dcd58(0x1b2);const _0x315fa8=maxDigits-(_0xf49c52['length']+(_0x246ce0>0x0?0x0:0x0));for(let _0x987ec1=0x0;_0x987ec1<_0x315fa8-(_0x1d8314>_0x246ce0?_0x1d8314-_0x246ce0:0x0);_0x987ec1++){_0x283952+=_0x3dcd58(0x183);}for(const _0x190204 of _0x4ec507){_0x190204==='.'?_0x283952+=_0x3dcd58(0x1c3):_0x283952+=_0x3dcd58(0x13c)+_0x190204+'</div>';}_0x283952+=_0x3dcd58(0x156);let _0x322a56=_0x3dcd58(0x17c);_0x322a56+=_0x3dcd58(0x17a);const _0x21cba3=maxDigits-(_0x108fff['length']+0x1);for(let _0x1883be=0x0;_0x1883be<_0x21cba3-(_0x246ce0>_0x1d8314?_0x246ce0-_0x1d8314:0x0);_0x1883be++){_0x322a56+='<div\x20class=\x22num-digit\x22\x20style=\x22color:\x20transparent;\x22>-</div>';}for(const _0x5f5739 of _0x14361d){_0x5f5739==='.'?_0x322a56+=_0x3dcd58(0x1a1):_0x322a56+=_0x3dcd58(0x13c)+_0x5f5739+_0x3dcd58(0x156);}_0x322a56+='</div>';let _0x193b2b=_0x3dcd58(0x196),_0x4e88f0='',_0x12df62=0x0;const _0x4d99b5=_0x14361d[_0x3dcd58(0x18a)]('.','');for(let _0xe5af18=_0x4d99b5['length']-0x1;_0xe5af18>=0x0;_0xe5af18--){const _0x441409=parseInt(_0x4d99b5[_0xe5af18]);if(isNaN(_0x441409))continue;_0x12df62++;const _0x20d1f0=parseInt(_0xf49c52)*_0x441409,_0x264133=_0x20d1f0[_0x3dcd58(0x1cf)](),_0x470cf8=_0x4d99b5['length']-0x1-_0xe5af18;let _0x16c3fa=_0x3dcd58(0x12e)+_0x12df62+'\x22>';if(_0x12df62>0x1)_0x16c3fa+=_0x3dcd58(0x146);else _0x16c3fa+=_0x3dcd58(0x1b2);const _0x5d9ee0=_0x264133[_0x3dcd58(0x10b)],_0x3629a4=maxDigits-0x1-_0x5d9ee0-_0x470cf8;for(let _0x5695ff=0x0;_0x5695ff<_0x3629a4;_0x5695ff++){_0x16c3fa+=_0x3dcd58(0x183);}for(let _0x289cd2=0x0;_0x289cd2<_0x5d9ee0;_0x289cd2++){_0x16c3fa+=_0x3dcd58(0x197)+_0x12df62+_0x3dcd58(0x1e6)+_0x50166c+_0x3dcd58(0x1f1),_0x50166c++;}for(let _0x1e39ca=0x0;_0x1e39ca<_0x470cf8;_0x1e39ca++){_0x16c3fa+=_0x3dcd58(0x1d0);}_0x16c3fa+='</div>',_0x4e88f0+=_0x16c3fa;}let _0x329704=_0x12df62>0x1?_0x3dcd58(0x19d):'',_0x2337a2=_0x3dcd58(0x1f9);_0x2337a2+='<div\x20class=\x22num-op\x22></div>';const _0x289511=_0x12de66[_0x3dcd58(0x10b)],_0x480a00=maxDigits-0x1-_0x289511;for(let _0x2c017f=0x0;_0x2c017f<_0x480a00;_0x2c017f++){_0x2337a2+='<div\x20class=\x22num-digit\x22\x20style=\x22color:\x20transparent;\x22>-</div>';}for(let _0x16dee1=0x0;_0x16dee1<_0x289511;_0x16dee1++){_0x2337a2+='<input\x20type=\x22text\x22\x20class=\x22input-digit-box\x20result-input\x22\x20data-index=\x22'+_0x50166c+_0x3dcd58(0x1f1),_0x50166c++;}_0x2337a2+=_0x3dcd58(0x156);let _0x4af1d6=_0x3dcd58(0x1af);_0x2b644f[_0x3dcd58(0x18b)]=_0x34a09c+_0x283952+_0x322a56+_0x193b2b+_0x4e88f0+_0x329704+_0x2337a2+_0x4af1d6;const _0x57d6c1=parseFloat(getComputedStyle(_0x2b644f)[_0x3dcd58(0x13a)]),_0x35a1b3=1.4+0.1,_0x357447=document[_0x3dcd58(0x16a)](_0x3dcd58(0x1f6));for(let _0x1034eb=0x1;_0x1034eb<_0x289511;_0x1034eb++){const _0x2f74dc=document[_0x3dcd58(0x1a3)](_0x3dcd58(0x148));_0x2f74dc[_0x3dcd58(0xfa)]=_0x3dcd58(0x189);let _0x40c486=_0x1034eb*_0x35a1b3+0.05,_0x3a0ccb=_0x40c486*_0x57d6c1-0x4;_0x2f74dc[_0x3dcd58(0x1ff)]['right']=_0x3a0ccb+'px',_0x2f74dc['dataset'][_0x3dcd58(0x17d)]=_0x1034eb,_0x2f74dc[_0x3dcd58(0x1b0)](_0x3dcd58(0x116),toggleDecimalPoint),_0x357447[_0x3dcd58(0x125)](_0x2f74dc);}setupInputListeners();const _0x181dc3=document[_0x3dcd58(0x201)](_0x3dcd58(0x12d)),_0x123523=document[_0x3dcd58(0x201)](_0x3dcd58(0x1ea)),_0x3bf0be=document[_0x3dcd58(0x16a)](_0x3dcd58(0x12f)),_0x3f1c1c=document[_0x3dcd58(0x1ca)](_0x3dcd58(0x171));if(_0x3f1c1c[_0x3dcd58(0x10b)]>=0x2){const _0x4895fd=_0x3f1c1c[_0x3f1c1c['length']-0x2],_0x5cbfcf=_0x3f1c1c[_0x3f1c1c[_0x3dcd58(0x10b)]-0x3];if(!_0x4895fd)return;const _0x2a0970=parseFloat(getComputedStyle(_0x2b644f)[_0x3dcd58(0x13a)]),_0x12eb85=1.7,_0x3a187a=_0x12eb85*_0x2a0970;let _0x4ffe5a;_0x5cbfcf?_0x4ffe5a=_0x5cbfcf[_0x3dcd58(0x152)]:_0x4ffe5a=_0x4895fd['offsetLeft']-_0x3a187a;const _0x307f4a=-0x78,_0x380aae=_0x4ffe5a+_0x307f4a,_0x10945b=[_0x181dc3,_0x123523][_0x3dcd58(0x11d)](_0x2b081f=>_0x2b081f);_0x10945b[_0x3dcd58(0x1f0)](_0x2b1e07=>{const _0x48db35=_0x3dcd58;_0x2b1e07[_0x48db35(0x1ff)][_0x48db35(0x15d)]=_0x380aae+'px',_0x2b1e07[_0x48db35(0x1ff)]['right']=_0x48db35(0x113),_0x2b1e07[_0x48db35(0x1ff)]['width']='auto',_0x2b1e07[_0x48db35(0x1ff)][_0x48db35(0x151)]=_0x48db35(0x15f);});if(_0x3bf0be){const _0x5f1e63=3.4,_0x36333e=_0x5f1e63*_0x2a0970,_0x47b9ed=-0x78,_0x35c4dc=_0x380aae+_0x36333e+_0x47b9ed;_0x3bf0be[_0x3dcd58(0x1ff)][_0x3dcd58(0x15d)]=_0x35c4dc+'px',_0x3bf0be[_0x3dcd58(0x1ff)]['right']='auto',_0x3bf0be[_0x3dcd58(0x1ff)][_0x3dcd58(0x1b8)]='block';}}else{if(_0x181dc3)_0x181dc3[_0x3dcd58(0x1ff)][_0x3dcd58(0x1b8)]=_0x3dcd58(0x16f);if(_0x123523)_0x123523[_0x3dcd58(0x1ff)][_0x3dcd58(0x1b8)]='none';if(_0x3bf0be)_0x3bf0be['style'][_0x3dcd58(0x1b8)]=_0x3dcd58(0x16f);}}function setupInputListeners(){const _0x58f795=_0x443d44,_0x5a0fc0=document['querySelectorAll'](_0x58f795(0x111));_0x5a0fc0[_0x58f795(0x1f0)](_0x4acf34=>{const _0x3a0fef=_0x58f795;_0x4acf34['setAttribute'](_0x3a0fef(0x110),'text'),_0x4acf34[_0x3a0fef(0x11c)]('inputmode',_0x3a0fef(0x1d1)),_0x4acf34[_0x3a0fef(0x1b0)](_0x3a0fef(0x120),_0x3974c9=>{const _0x9236d5=_0x3a0fef;let _0x312406=_0x3974c9['target'][_0x9236d5(0x19e)][_0x9236d5(0x18a)](/[^0-9]/g,'');if(_0x312406['length']>0x1)_0x312406=_0x312406[_0x9236d5(0x1eb)](-0x1);_0x3974c9[_0x9236d5(0xff)][_0x9236d5(0x19e)]=_0x312406;}),_0x4acf34['addEventListener']('focus',_0x5115eb=>{const _0x44d20a=_0x3a0fef;document['querySelectorAll'](_0x44d20a(0x111))[_0x44d20a(0x1f0)](_0x5cc350=>_0x5cc350[_0x44d20a(0xf9)][_0x44d20a(0x1b3)]('active')),_0x5115eb['target'][_0x44d20a(0xf9)][_0x44d20a(0x17f)]('active');}),_0x4acf34['addEventListener']('blur',_0x5c8401=>{const _0x2f144e=_0x3a0fef;_0x5c8401[_0x2f144e(0xff)]['classList'][_0x2f144e(0x1b3)](_0x2f144e(0x1e5));});});}function toggleDecimalPoint(_0x44b185){const _0x4a4893=_0x443d44;if(document['getElementById']('next-problem-btn')[_0x4a4893(0x1ff)][_0x4a4893(0x1b8)]===_0x4a4893(0x124))return;const _0x494233=_0x44b185['target'];document[_0x4a4893(0x1ca)](_0x4a4893(0x134))['forEach'](_0x4be4b3=>{const _0x51b60b=_0x4a4893;if(_0x4be4b3!==_0x494233)_0x4be4b3[_0x51b60b(0xf9)]['remove'](_0x51b60b(0xf7));}),_0x494233[_0x4a4893(0xf9)][_0x4a4893(0x172)](_0x4a4893(0xf7)),saveGameState();}function checkAnswer(){const _0x23ec14=_0x443d44,_0x2d2c6a=currentProblemData;if(!_0x2d2c6a)return![];const _0x477ca2=(_0x2d2c6a[_0x23ec14(0x175)]*0xa**_0x2d2c6a['decimalPointCount'])[_0x23ec14(0x1d4)](0x0),_0x466891=document[_0x23ec14(0x1ca)](_0x23ec14(0x1ac)),_0x442bb2=document['querySelectorAll'](_0x23ec14(0x18c));let _0x3ac27c=!![];const _0x263e04=[..._0x466891,..._0x442bb2];_0x263e04[_0x23ec14(0x1f0)](_0x360acd=>{const _0x14026e=_0x23ec14;(_0x360acd['value']===''||isNaN(parseInt(_0x360acd[_0x14026e(0x19e)])))&&(_0x3ac27c=![]);});if(!_0x3ac27c)return showPopup(_0x23ec14(0x1bc),_0x23ec14(0x1c8),![]),![];const _0x2bb1b1=document['querySelector'](_0x23ec14(0x101)),_0x4c42bd=_0x2bb1b1?parseInt(_0x2bb1b1[_0x23ec14(0x1b1)][_0x23ec14(0x17d)]):-0x1;if(_0x4c42bd===-0x1)return showPopup('소수점\x20위치를\x20선택해주세요.',_0x23ec14(0x1c8),![]),![];const _0x453db5=_0x2d2c6a[_0x23ec14(0x1ce)][_0x23ec14(0x1cf)]()[_0x23ec14(0x18a)]('.',''),_0xf065d=_0x2d2c6a[_0x23ec14(0x128)][_0x23ec14(0x1cf)]()[_0x23ec14(0x18a)]('.','');let _0x5ba965=!![],_0x5230a9=0x0;for(let _0x1d4826=_0xf065d[_0x23ec14(0x10b)]-0x1;_0x1d4826>=0x0;_0x1d4826--){const _0x186a16=parseInt(_0xf065d[_0x1d4826]);if(isNaN(_0x186a16))continue;const _0x53d13e=parseInt(_0x453db5)*_0x186a16,_0x38371c=_0x53d13e['toString']();for(let _0x19710d=0x0;_0x19710d<_0x38371c['length'];_0x19710d++){const _0x6b87a5=parseInt(_0x38371c[_0x19710d]),_0x15ace8=parseInt(_0x466891[_0x5230a9][_0x23ec14(0x19e)]);if(_0x15ace8!==_0x6b87a5){_0x5ba965=![];break;}_0x5230a9++;}if(!_0x5ba965)break;}let _0x3c654d='';_0x442bb2[_0x23ec14(0x1f0)](_0x19e1bf=>{const _0x5e6888=_0x23ec14;_0x3c654d+=_0x19e1bf[_0x5e6888(0x19e)];});let _0x247e77=!![],_0x1c0088='';if(!_0x5ba965)_0x247e77=![],_0x1c0088=_0x23ec14(0x17e);else{if(_0x3c654d!==_0x477ca2)_0x247e77=![],_0x1c0088='최종\x20계산\x20결과(숫자)가\x20올바르지\x20않아요.';else _0x4c42bd!==_0x2d2c6a[_0x23ec14(0x1dd)]&&(_0x247e77=![],_0x1c0088=_0x23ec14(0x122)+_0x2d2c6a['decimalPointCount']+_0x23ec14(0x10f));}if(_0x247e77){if(gameMode==='timeAttack'&&timeAttackProblemStartTimestamp[currentProblem]!==undefined){const _0x1e811a=(Date[_0x23ec14(0x15c)]()-timeAttackProblemStartTimestamp[currentProblem])/0x3e8;timeAttackProblemTimeSpent[currentProblem]=_0x1e811a;}return score[_0x23ec14(0x1df)][_0x23ec14(0x10b)]===currentProblem&&score['results'][_0x23ec14(0x1bf)](currentProblemAttempts),!![];}else return currentProblemAttempts++,saveGameState(),showPopup(_0x23ec14(0x1b6),_0x1c0088,![]),![];}function nextProblem(){closePopup(),currentProblem++;if(gameMode==='classic'&&currentProblem>=problemList['length']){showFinalResult();return;}loadProblem();}function showPopup(_0x3b40fb,_0x126546,_0x2d2ded){const _0x116ae3=_0x443d44,_0x48c0db=document[_0x116ae3(0x16a)](_0x116ae3(0x193)),_0xbe3bad=document[_0x116ae3(0x16a)](_0x116ae3(0x18d)),_0x49fce9=document[_0x116ae3(0x16a)](_0x116ae3(0x169));_0x2d2ded?(_0xbe3bad[_0x116ae3(0x18b)]=_0x3b40fb,_0xbe3bad[_0x116ae3(0xfa)]=_0x116ae3(0x1e9),_0x49fce9['style'][_0x116ae3(0x1b8)]='block'):(_0xbe3bad[_0x116ae3(0x18b)]=_0x3b40fb+_0x116ae3(0x112)+_0x126546+'</span>',_0xbe3bad[_0x116ae3(0xfa)]='incorrect',_0x49fce9[_0x116ae3(0x1ff)]['display']='none'),_0x48c0db[_0x116ae3(0x1ff)][_0x116ae3(0x1b8)]='flex';}function getProblemScoreBase(_0x2170b9){const _0x1dba7b=_0x443d44,_0x36747b=_0x2170b9[_0x1dba7b(0x1ad)]===_0x1dba7b(0x129)?'1':_0x2170b9[_0x1dba7b(0x1ad)];let _0x2749a9=0x0;if(_0x36747b===_0x1dba7b(0x129))return 0x0;if(_0x36747b==='1')return _0x2749a9=gameMode===_0x1dba7b(0x1fa)?0x64:0xc8,_0x2749a9;return gameMode===_0x1dba7b(0x1fa)?_0x2170b9[_0x1dba7b(0x110)]==='decXdec'?_0x2749a9=0xfa:_0x2749a9=0xaf:_0x2170b9[_0x1dba7b(0x110)]===_0x1dba7b(0x102)?_0x2749a9=0x28a:_0x2749a9=0x1c2,_0x2749a9;}function calculateFinalScore(){const _0x5838fc=_0x443d44;if(selectedDifficulty==='practice')return 0x0;let _0x102911=0x0,_0x167af6=0x0,_0x226080=0x0,_0x5e98d8=0x0;score[_0x5838fc(0x1df)]['forEach']((_0x24a041,_0x407216)=>{const _0x2d2e8b=_0x5838fc,_0xa487ba=problemList[_0x407216],_0x41e7fc=getProblemScoreBase(_0xa487ba);let _0xb94fb2=timeAttackProblemTimeSpent[_0x407216]||_0x226080;const _0x2ed58e=0x5;let _0x4b246b=_0x41e7fc;gameMode===_0x2d2e8b(0x188)&&(_0xb94fb2<_0x2ed58e&&_0x24a041===0x0&&(_0x4b246b=0x0,_0xb94fb2=_0x226080,console[_0x2d2e8b(0x1ec)](_0x2d2e8b(0x1ef)+(_0x407216+0x1)+_0x2d2e8b(0x109))));_0x167af6+=_0x4b246b;let _0x4c855c=0x0;if(_0x24a041===0x0)_0x4c855c=0x1;else{if(_0x24a041===0x1)_0x4c855c=0.6;else{if(_0x24a041===0x2)_0x4c855c=0.4;else _0x4c855c=0.2;}}_0x102911+=Math[_0x2d2e8b(0x1e4)](_0x4b246b*_0x4c855c);if(gameMode===_0x2d2e8b(0x188)){const _0x56bb99=_0xa487ba['difficulty'],_0x107f09=_0xa487ba[_0x2d2e8b(0x110)],_0x1b8eb1=PROBLEM_BASE_TIMES[_0x107f09][_0x56bb99];_0x226080+=_0x1b8eb1,_0x5e98d8+=_0xb94fb2;}});let _0x437d5f=_0x102911;if(gameMode===_0x5838fc(0x188)){const _0x506a81=_0x167af6*0.4;let _0x3cf821=0x0;if(_0x5e98d8<_0x226080){const _0x4f03c7=(_0x226080-_0x5e98d8)/_0x226080;_0x3cf821=Math[_0x5838fc(0x12b)](_0x506a81,_0x506a81*_0x4f03c7);}_0x437d5f+=Math[_0x5838fc(0x1e4)](_0x3cf821);if(remainingTime<=0x0&&_0x167af6===0x0)return 0x0;}return Math[_0x5838fc(0x12b)](0x2710,_0x437d5f);}function _0x3c66(_0x58b810,_0x2b84a1){const _0x3d59b2=_0x3d59();return _0x3c66=function(_0x3c665e,_0x42b15e){_0x3c665e=_0x3c665e-0xf5;let _0x2eaf44=_0x3d59b2[_0x3c665e];return _0x2eaf44;},_0x3c66(_0x58b810,_0x2b84a1);}function startTimer(_0x17b682=![]){const _0x413244=_0x443d44;stopTimer();if(!_0x17b682)remainingTime=timeLimitInMinutes*0x3c;const _0xebe3c9=document[_0x413244(0x16a)](_0x413244(0x167));_0xebe3c9[_0x413244(0x1ff)][_0x413244(0x1b8)]=_0x413244(0x124),updateTimerDisplay(),timerInterval=setInterval(()=>{remainingTime--,updateTimerDisplay(),remainingTime<=0x0&&(stopTimer(),showFinalResult());},0x3e8);}function stopTimer(){clearInterval(timerInterval),timerInterval=null;}function updateTimerDisplay(){const _0x6d06e=_0x443d44,_0xb63701=document[_0x6d06e(0x16a)](_0x6d06e(0x167));if(remainingTime<0x0)remainingTime=0x0;const _0x137976=Math[_0x6d06e(0x10d)](remainingTime/0x3c),_0x178305=remainingTime%0x3c;_0xb63701[_0x6d06e(0x1b9)]=_0x137976+':'+_0x178305[_0x6d06e(0x1cf)]()[_0x6d06e(0x16c)](0x2,'0'),_0xb63701['classList'][_0x6d06e(0x172)](_0x6d06e(0x1ba),remainingTime<=0x3c&&remainingTime>0x0);}function showFinalResult(){const _0x534f87=_0x443d44;if(gameMode===_0x534f87(0x188))stopTimer();const _0x5d15b7=score['results'][_0x534f87(0x10b)];let _0x506389=0x0,_0x168710=0x0,_0x25485d=0x0;score[_0x534f87(0x1df)][_0x534f87(0x1f0)](_0x366ddc=>{let _0x3e1020=0x0;if(_0x366ddc===0x0)_0x506389++,_0x3e1020=0x1;else{_0x168710++;if(_0x366ddc===0x1)_0x3e1020=0.6;else _0x366ddc===0x2?_0x3e1020=0.4:_0x3e1020=0.2;}_0x25485d+=_0x3e1020;});const _0x537cfb=_0x5d15b7>0x0?parseFloat((_0x25485d/_0x5d15b7*0x64)[_0x534f87(0x1d4)](0x1)):0x0;finalAccuracyValue=_0x537cfb;const _0x236d5e=selectedDifficulty===_0x534f87(0x129);document[_0x534f87(0x16a)](_0x534f87(0x1d8))['textContent']=_0x236d5e?_0x534f87(0x103):_0x534f87(0x1f5);const _0x1e3e0a=document[_0x534f87(0x1ca)](_0x534f87(0x140)),_0x10a81f=document[_0x534f87(0x16a)](_0x534f87(0x153)),_0x2817a2=document[_0x534f87(0x201)](_0x534f87(0x126));_0x236d5e?(_0x1e3e0a[_0x534f87(0x1f0)](_0x498734=>_0x498734[_0x534f87(0x1ff)]['display']=_0x534f87(0x16f)),_0x10a81f[_0x534f87(0x1ff)][_0x534f87(0x1b8)]=_0x534f87(0x16f),_0x2817a2[_0x534f87(0xf9)]['add'](_0x534f87(0x145))):(_0x1e3e0a[_0x534f87(0x1f0)](_0x41325f=>_0x41325f[_0x534f87(0x1ff)][_0x534f87(0x1b8)]=_0x534f87(0x124)),_0x10a81f[_0x534f87(0x1ff)][_0x534f87(0x1b8)]=_0x534f87(0x124),_0x2817a2[_0x534f87(0xf9)][_0x534f87(0x1b3)]('practice-only'));finalScoreValue=calculateFinalScore();if(gameMode===_0x534f87(0x188)&&!_0x236d5e){document[_0x534f87(0x16a)](_0x534f87(0x16b))[_0x534f87(0x1ff)][_0x534f87(0x1b8)]=_0x534f87(0x124);const _0x3105e1=timeAttackProblemTimeSpent[_0x534f87(0x14d)]((_0x19a639,_0x3b799d)=>_0x19a639+_0x3b799d,0x0),_0x1621f8=_0x3105e1/_0x5d15b7;document[_0x534f87(0x16a)](_0x534f87(0x165))['textContent']=_0x5d15b7>0x0?_0x1621f8['toFixed'](0x1):_0x534f87(0x154);}else document[_0x534f87(0x16a)]('time-attack-avg-time')['style'][_0x534f87(0x1b8)]=_0x534f87(0x16f);document[_0x534f87(0x16a)](_0x534f87(0x1a2))[_0x534f87(0x1b9)]=_0x506389,document[_0x534f87(0x16a)](_0x534f87(0x1f4))[_0x534f87(0x1b9)]=_0x168710,document[_0x534f87(0x16a)]('final-accuracy')[_0x534f87(0x1b9)]=_0x537cfb+'%',!_0x236d5e&&(document[_0x534f87(0x16a)]('final-score')['textContent']=finalScoreValue[_0x534f87(0x150)]()),showPage(_0x534f87(0x1d6)),saveGameState();}function closePopup(){const _0x50aebc=_0x443d44;document[_0x50aebc(0x16a)](_0x50aebc(0x193))['style'][_0x50aebc(0x1b8)]='none';}function showQrPopup(){const _0x561590=_0x443d44;document[_0x561590(0x16a)]('qr-popup-overlay')[_0x561590(0x1ff)][_0x561590(0x1b8)]='flex',document[_0x561590(0x201)]('.popup-qr')[_0x561590(0x1ff)][_0x561590(0x162)]=_0x561590(0x137);}function closeQrPopup(){const _0x2208a7=_0x443d44;document[_0x2208a7(0x16a)](_0x2208a7(0x14b))[_0x2208a7(0x1ff)][_0x2208a7(0x1b8)]=_0x2208a7(0x16f);}function closeHofPopup(){const _0x2a3a94=_0x443d44;document[_0x2a3a94(0x16a)]('hof-popup-overlay')['style'][_0x2a3a94(0x1b8)]=_0x2a3a94(0x16f);}function showHofPopup(){const _0x3235b4=_0x443d44,_0x184d8d=document['getElementById'](_0x3235b4(0x164)),_0x26fd8f=document[_0x3235b4(0x201)](_0x3235b4(0x1a7)),_0x4ef94d=document[_0x3235b4(0x201)](_0x3235b4(0x13d)),_0x375253=document[_0x3235b4(0x201)]('#hof-table-timeattack\x20tbody');document[_0x3235b4(0x16a)](_0x3235b4(0x1b5))[_0x3235b4(0x1ff)][_0x3235b4(0x1b8)]='block',hasSubmittedScore?(_0x26fd8f[_0x3235b4(0x1ff)][_0x3235b4(0x1b8)]=_0x3235b4(0x16f),_0x184d8d[_0x3235b4(0x1b9)]=_0x3235b4(0xf8),_0x184d8d[_0x3235b4(0x1ff)][_0x3235b4(0x1fb)]=_0x3235b4(0x19c)):selectedDifficulty===_0x3235b4(0x129)?(_0x26fd8f['style']['display']=_0x3235b4(0x16f),_0x184d8d['textContent']=_0x3235b4(0x1e0),_0x184d8d[_0x3235b4(0x1ff)][_0x3235b4(0x1fb)]=_0x3235b4(0x195)):(_0x26fd8f[_0x3235b4(0x1ff)][_0x3235b4(0x1b8)]=_0x3235b4(0x1d2),_0x184d8d[_0x3235b4(0x1b9)]='',document[_0x3235b4(0x16a)](_0x3235b4(0x1be))[_0x3235b4(0x19e)]='',document[_0x3235b4(0x16a)](_0x3235b4(0x174))[_0x3235b4(0x1d7)]=![]),_0x4ef94d[_0x3235b4(0x18b)]=_0x3235b4(0x176),_0x375253['innerHTML']='<tr><td\x20colspan=\x223\x22>불러오는\x20중...</td></tr>',document[_0x3235b4(0x16a)](_0x3235b4(0x1a5))['style'][_0x3235b4(0x1b8)]=_0x3235b4(0x1d2),fetch(webAppUrl)[_0x3235b4(0x133)](_0x40002f=>_0x40002f[_0x3235b4(0x192)]())[_0x3235b4(0x133)](_0x918d81=>{const _0x4f8f2d=_0x3235b4,_0x34e48c=_0x918d81['classicTopScorer'],_0x9edc48=_0x918d81[_0x4f8f2d(0x1bd)];populateHofTable(_0x4ef94d,_0x918d81[_0x4f8f2d(0x1fa)]||[],_0x4f8f2d(0x180),_0x34e48c),populateHofTable(_0x375253,_0x918d81[_0x4f8f2d(0x188)]||[],'타임어택',_0x9edc48);})[_0x3235b4(0x136)](_0x397acb=>{const _0x13f167=_0x3235b4;_0x4ef94d[_0x13f167(0x18b)]='<tr><td\x20colspan=\x223\x22\x20style=\x22color:\x20#888;\x22>기록을\x20불러오는\x20데\x20실패했습니다.</td></tr>',_0x375253['innerHTML']='<tr><td\x20colspan=\x223\x22\x20style=\x22color:\x20#888;\x22>기록을\x20불러오는\x20데\x20실패했습니다.</td></tr>',console[_0x13f167(0x159)](_0x13f167(0x1fe),_0x397acb);});}function populateHofTable(_0x30d3d3,_0x2cf896,_0x414060,_0x49c1a7){const _0x191502=_0x443d44;_0x30d3d3['innerHTML']='';if(_0x49c1a7){const _0x2e5a45=_0x191502(0x14f)+_0x49c1a7[_0x191502(0x17b)]+'\x20🏆</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>'+_0x49c1a7[_0x191502(0x190)][_0x191502(0x150)]()+_0x191502(0x11f);_0x30d3d3['innerHTML']+=_0x2e5a45;}if(!_0x2cf896||_0x2cf896[_0x191502(0x10b)]===0x0){!_0x49c1a7&&(_0x30d3d3[_0x191502(0x18b)]+=_0x191502(0x107)+_0x414060+_0x191502(0x184));return;}const _0x17ad46=_0x2cf896[_0x191502(0x11d)](_0x37fcd0=>!(_0x49c1a7&&_0x37fcd0[_0x191502(0x190)]===_0x49c1a7[_0x191502(0x190)]&&_0x37fcd0[_0x191502(0x17b)]===_0x49c1a7[_0x191502(0x17b)]));let _0x26bbb6=0x1,_0xd993b5=0x0,_0xbdf274=null;_0x17ad46['forEach']((_0x103b5a,_0x116892)=>{const _0x1ecae9=_0x191502;if(_0xbdf274!==null&&_0x103b5a['score']<_0xbdf274)_0x26bbb6+=_0xd993b5+0x1,_0xd993b5=0x0;else _0xbdf274!==null&&_0x103b5a[_0x1ecae9(0x190)]===_0xbdf274&&_0xd993b5++;_0xbdf274=_0x103b5a['score'];if(_0x26bbb6>0x14)return;let _0xd44a98='',_0x364edc='';if(_0x26bbb6===0x1)_0xd44a98='🥇',_0x364edc=_0x1ecae9(0x1da);else{if(_0x26bbb6===0x2)_0xd44a98='🥈',_0x364edc=_0x1ecae9(0x1e3);else _0x26bbb6===0x3&&(_0xd44a98='🥉',_0x364edc=_0x1ecae9(0x118));}const _0x3f1b11='<tr\x20class=\x22'+_0x364edc+_0x1ecae9(0x1b4)+_0x26bbb6+_0x1ecae9(0x1cd)+_0x103b5a[_0x1ecae9(0x17b)]+'\x20'+_0xd44a98+_0x1ecae9(0x1cd)+_0x103b5a[_0x1ecae9(0x190)]['toLocaleString']()+_0x1ecae9(0x160);_0x30d3d3[_0x1ecae9(0x18b)]+=_0x3f1b11;});}function submitScore(){const _0xe9b609=_0x443d44,_0x2d6a42=document['getElementById'](_0xe9b609(0x1be)),_0x4756eb=_0x2d6a42[_0xe9b609(0x19e)],_0xcb40b9=document['getElementById'](_0xe9b609(0x174)),_0x2f10fb=document[_0xe9b609(0x16a)](_0xe9b609(0x164));if(!/^[A-Z]{3}$/['test'](_0x4756eb)){_0x2f10fb[_0xe9b609(0x1b9)]=_0xe9b609(0x18f),_0x2f10fb[_0xe9b609(0x1ff)][_0xe9b609(0x1fb)]=_0xe9b609(0x14c);return;}if(blockedWords[_0xe9b609(0x163)](_0x4756eb)){_0x2f10fb[_0xe9b609(0x1b9)]=_0xe9b609(0x12c),_0x2f10fb[_0xe9b609(0x1ff)][_0xe9b609(0x1fb)]=_0xe9b609(0x14c);return;}_0xcb40b9[_0xe9b609(0x1d7)]=!![],_0x2f10fb[_0xe9b609(0x1b9)]='등록\x20중...',_0x2f10fb[_0xe9b609(0x1ff)][_0xe9b609(0x1fb)]=_0xe9b609(0x121);const _0x4e6a27={'action':'submitScore','initial':_0x4756eb,'score':finalScoreValue,'problems':problemList[_0xe9b609(0x10b)],'accuracy':finalAccuracyValue,'difficulty':selectedDifficulty,'type':selectedType,'mode':gameMode};fetch(webAppUrl,{'method':'POST','cache':'no-cache','headers':{'Content-Type':'application/json'},'body':JSON[_0xe9b609(0x18e)](_0x4e6a27)})[_0xe9b609(0x133)](_0x5f0544=>_0x5f0544[_0xe9b609(0x192)]())['then'](_0x3b3e59=>{const _0x4e6cba=_0xe9b609;if(_0x3b3e59[_0x4e6cba(0x131)]==='success')hasSubmittedScore=!![],saveGameState(),_0x2f10fb[_0x4e6cba(0x1b9)]=_0x4e6cba(0x1c0),_0x2f10fb[_0x4e6cba(0x1ff)][_0x4e6cba(0x1fb)]=_0x4e6cba(0x1cb),document[_0x4e6cba(0x201)](_0x4e6cba(0x1a7))['style'][_0x4e6cba(0x1b8)]=_0x4e6cba(0x16f),setTimeout(showHofPopup,0x5dc);else throw new Error(_0x3b3e59[_0x4e6cba(0x1bb)]||_0x4e6cba(0x104));})[_0xe9b609(0x136)](_0x52dd87=>{const _0x316566=_0xe9b609;_0x2f10fb[_0x316566(0x1b9)]=_0x316566(0x16e),_0x2f10fb[_0x316566(0x1ff)][_0x316566(0x1fb)]='red',_0xcb40b9['disabled']=![],console[_0x316566(0x159)]('Error\x20submitting\x20score:',_0x52dd87);});}function _0x3d59(){const _0x242952=['position','중간\x20계산\x20결과가\x20올바르지\x20않아요.','add','클래식','random','6183380bwcfnT','<div\x20class=\x22num-digit\x22\x20style=\x22color:\x20transparent;\x22>-</div>','\x20기록이\x20없습니다.</td></tr>','time-limit-display','overlay-message','1816041RBIqdE','timeAttack','result-decimal-point','replace','innerHTML','.result-input','popup-main-message','stringify','이니셜은\x20영어\x20대문자\x203글자로\x20입력해주세요.','score','indexOf','json','result-popup-overlay','intXdec','orange','<div\x20class=\x22multiplication-line\x22\x20style=\x22width:\x20100%;\x22></div>','<input\x20type=\x22text\x22\x20class=\x22input-digit-box\x20multi-input\x22\x20data-line=\x22','practice-guide-container','3924PNtNWb','parse','getAttribute','blue','<div\x20class=\x22multiplication-line\x20plus\x22\x20style=\x22width:\x20100%;\x22></div>','value','practice-4','getItem','<div\x20class=\x22num-digit\x20num-decimal-placeholder\x22\x20data-num-index=\x222\x22><span\x20class=\x22decimal-point\x22>.</span></div>','correct-count','createElement','time-minus','hof-popup-overlay','transform\x20','.hof-input-group','practice-3','start-quiz-btn','data-difficulty','classic-settings','.multi-input','difficulty','transform','<div\x20class=\x22arrow-container\x22\x20id=\x22arrow-container\x22></div>','addEventListener','dataset','<div\x20class=\x22num-op\x22\x20style=\x22width:\x201.4em;\x22></div>','remove','\x22><td>','hof-reset-message','다시\x20생각해\x20볼까요?','문제\x20개수는\x20<br>\x203개로\x20고정됩니다','display','textContent','time-warning','message','아직\x20모든\x20칸을\x20채우지\x20않았어요.','timeAttackTopScorer','hof-initial','push','성공적으로\x20등록되었습니다!\x20(순위는\x20잠시\x20후\x20반영됩니다.)','startsWith','touchstart','<div\x20class=\x22num-digit\x20num-decimal-placeholder\x22\x20data-num-index=\x221\x22><span\x20class=\x22decimal-point\x22>.</span></div>','20haoUBU','\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20maxlength=\x221\x22\x20inputmode=\x22numeric\x22>','time-attack-settings','#difficulty-select\x20button','빈\x20칸과\x20소숫점을\x20모두\x20입력해야\x20합니다.','finished','querySelectorAll','#4B8134','pagehide','</td><td>','num1','toString','<div\x20class=\x22num-digit\x22\x20style=\x22color:\x20#aaa;\x22>0</div>','numeric','flex','setup-page','toFixed','270968UdgwmH','final-result-page','disabled','final-result-title','gameMode','rank-1','translateX(-100%)','problem-quantity','decimalPointCount','문제\x20생성에\x20실패했습니다.\x20다른\x20설정으로\x20다시\x20시도해\x20주세요.','results','연습\x20모드\x20결과는\x20명예의\x20전당에\x20등록할\x20수\x20없습니다.','object','.progress-bar','rank-2','round','active','\x22\x20data-index=\x22','#difficulty-select\x20button[data-difficulty=\x221\x22]','세로셈과\x20소수점을\x20모두\x20입력하고\x20꾹\x20눌러주세요!','correct','.carry-input-row.row-2','slice','warn','transition','quizState','[Anti-Cheat]\x20','forEach','\x22\x20maxlength=\x221\x22\x20inputmode=\x22numeric\x22>','mode-selection-page','진행\x20상황이\x20사라집니다.\x20정말로\x20첫\x20페이지로\x20돌아갈까요?','retried-count','학습\x20완료','result-row','decXint','setItem','<div\x20class=\x22num-row\x22\x20id=\x22result-row\x22>','classic','color','translateX(0%)','classic-mode-btn','Error\x20fetching\x20leaderboard:','style','removeItem','querySelector','next-problem-btn','currentTarget','selected','이번\x20학습\x20기록은\x20이미\x20등록되었습니다.','classList','className','time-attack-mode-btn','in-progress','hidden','remainingTime','target','s\x20linear','.result-decimal-point.selected','decXdec','연습\x20완료','알\x20수\x20없는\x20오류','#type-select\x20button','치명적인\x20오류가\x20발생하여\x20페이지를\x20새로고침합니다.','<tr><td\x20colspan=\x223\x22\x20style=\x22color:\x20#888;\x22>아직\x20등록된\x20','.check-answer-guide','번\x20문제:\x205초\x20미만으로\x20풀이되어\x20점수\x20계산에서\x20제외됨.','totalProblems','length','assign','floor','finalScoreValue','자리입니다)','type','.input-digit-box','<br><span\x20style=\x22font-size:\x2080%;\x22>','auto','isInteger','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20id=\x22carry-guide-bubble\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20올림한\x20수를\x20적어두고\x20<br>\x20싶을\x20때\x20사용하세요!\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','click','21496fbXwYM','rank-3','problemList','#problem-page\x20.home-button','정답입니다!\x20🎉','setAttribute','filter','check-answer-btn','</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>','input','#333','소수점\x20위치가\x20올바르지\x20않아요.\x20(정답은\x20소수점\x20아래\x20','problem-counter-display','block','appendChild','.result-buttons','visibilitychange','num2','practice','split','min','타인에게\x20불쾌감을\x20주는\x20단어는\x20사용할\x20수\x20없습니다.','.carry-input-row.row-1','<div\x20class=\x22num-row\x20multi-line\x22\x20id=\x22multi-line-','carry-guide-bubble','\x22\x20data-row=\x22','result','17161969IyKqYD','then','.result-decimal-point','opacity','catch','250px','1998YyIoWX','남은\x20문제\x20','fontSize','time-control','<div\x20class=\x22num-digit\x22>','#hof-table-classic\x20tbody','<div\x20class=\x22carry-placeholder\x22></div>','4ECaXIP','.score-display','data-type','currentProblem','reload','번째\x20문제','practice-only','<div\x20class=\x22num-op\x22\x20style=\x22font-size:\x200.8em;\x20color:\x20#4b8134;\x20margin:\x200\x200.05em;\x22>+</div>','<div\x20class=\x22carry-input-row\x20row-','div','세로셈을\x20완성하고\x20소수점을\x20위치에\x20맞게\x20표시하세요.','touchend','qr-popup-overlay','red','reduce','quantity-plus','<tr\x20class=\x22top-scorer\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>⭐</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>','toLocaleString','textAlign','offsetLeft','show-hof-btn','N/A','max','</div>','426084GFMqhs','multiplication-container','error','visibilityState','qr-code-btn','now','left','quantity-minus','right','</td></tr>','966JYAqST','maxWidth','includes','hof-message','avg-time-display','시간은\x202분으로\x20<br>\x20고정됩니다','timer-display','settings-overlay','popup-next-btn','getElementById','time-attack-avg-time','padStart','problem-instruction','등록에\x20실패했습니다.\x20다시\x20시도해주세요.','none','<div\x20class=\x22carry-placeholder\x22\x20style=\x22width:\x201.4em;\x22></div>','#result-row\x20.input-digit-box','toggle','problem-page','hof-submit-btn','answer','<tr><td\x20colspan=\x223\x22>불러오는\x20중...</td></tr>','back-to-mode-select-btn','endsWith','mousedown','<div\x20class=\x22num-op\x22>x</div>','initial','<div\x20class=\x22num-row\x22\x20id=\x22num2-row\x22>'];_0x3d59=function(){return _0x242952;};return _0x3d59();}function saveGameState(){const _0x523a73=_0x443d44,_0x2747e6={'problemList':problemList,'currentProblem':currentProblem,'score':score,'selectedType':selectedType,'selectedDifficulty':selectedDifficulty,'totalProblems':totalProblems,'currentProblemAttempts':currentProblemAttempts,'finalScoreValue':finalScoreValue,'hasSubmittedScore':hasSubmittedScore,'gameMode':gameMode,'timeLimitInMinutes':timeLimitInMinutes,'remainingTime':remainingTime,'timeAttackProblemStartTimestamp':timeAttackProblemStartTimestamp,'timeAttackProblemTimeSpent':timeAttackProblemTimeSpent};localStorage[_0x523a73(0x1f8)](_0x523a73(0x1ee),JSON['stringify'](_0x2747e6));}function loadGameState(){const _0x346a7d=_0x443d44,_0x183332=localStorage[_0x346a7d(0x1a0)]('quizState');if(!_0x183332)return _0x346a7d(0x16f);const _0x569cea=JSON[_0x346a7d(0x19a)](_0x183332);if(!_0x569cea||!_0x569cea[_0x346a7d(0x119)]||_0x569cea[_0x346a7d(0x119)][_0x346a7d(0x10b)]===0x0||!_0x569cea[_0x346a7d(0x190)]||!_0x569cea[_0x346a7d(0x1d9)])return clearGameState(),_0x346a7d(0x16f);const _0xda6d1d=_0x569cea[_0x346a7d(0x1d9)]==='classic'&&_0x569cea[_0x346a7d(0x10a)]>0x0&&_0x569cea[_0x346a7d(0x142)]<_0x569cea[_0x346a7d(0x10a)],_0x46eae4=_0x569cea[_0x346a7d(0x1d9)]==='timeAttack'&&_0x569cea['remainingTime']>0x0;if(_0xda6d1d||_0x46eae4){Object['assign'](window,_0x569cea);if(typeof timeAttackProblemStartTimestamp!=='object'||timeAttackProblemStartTimestamp===null)timeAttackProblemStartTimestamp=[];if(typeof timeAttackProblemTimeSpent!==_0x346a7d(0x1e1)||timeAttackProblemTimeSpent===null)timeAttackProblemTimeSpent=[];return gameMode===_0x346a7d(0x188)&&remainingTime>0x0&&startTimer(!![]),_0x346a7d(0xfc);}const _0x439bf5=_0x569cea[_0x346a7d(0x190)][_0x346a7d(0x1df)]['length']>0x0||_0x569cea[_0x346a7d(0x1d9)]==='timeAttack'&&_0x569cea[_0x346a7d(0xfe)]<=0x0,_0x8d725e=_0x569cea[_0x346a7d(0x10e)]>0x0||_0x569cea[_0x346a7d(0x190)][_0x346a7d(0x1df)][_0x346a7d(0x10b)]>0x0;if(_0x439bf5&&_0x8d725e)return Object[_0x346a7d(0x10c)](window,_0x569cea),_0x346a7d(0x1c9);return clearGameState(),'none';}function clearGameState(){const _0x38d247=_0x443d44;localStorage[_0x38d247(0x200)]('quizState');}window['onload']=()=>{const _0x3fdc0c=_0x443d44;try{allPages[_0x3fdc0c(0x1f0)](_0x257cc5=>{const _0x51f41e=_0x3fdc0c,_0x1e9db2=document[_0x51f41e(0x16a)](_0x257cc5);if(_0x1e9db2)_0x1e9db2[_0x51f41e(0x1ff)][_0x51f41e(0x1b8)]='none';});const _0xf03234=loadGameState();if(_0xf03234===_0x3fdc0c(0x1c9))showPage(_0x3fdc0c(0x1d6)),showFinalResult(),clearGameState();else _0xf03234===_0x3fdc0c(0xfc)?(showPage(_0x3fdc0c(0x173)),loadProblem()):(resetGame(),showPage(_0x3fdc0c(0x1f2)));const _0x5e42e0=()=>{const _0x51cb5c=_0x3fdc0c;document[_0x51cb5c(0x16a)](_0x51cb5c(0x1fd))[_0x51cb5c(0x1b0)]('click',()=>selectGameMode(_0x51cb5c(0x1fa))),document['getElementById'](_0x51cb5c(0xfb))[_0x51cb5c(0x1b0)]('click',()=>selectGameMode(_0x51cb5c(0x188))),document[_0x51cb5c(0x16a)](_0x51cb5c(0x177))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),()=>{const _0x2a9c75=_0x51cb5c;confirm('진행\x20상황이\x20사라집니다.\x20정말로\x20모드\x20선택으로\x20돌아갈까요?')&&(resetGame(),showPage(_0x2a9c75(0x1f2)));}),document[_0x51cb5c(0x1ca)](_0x51cb5c(0x105))['forEach'](_0x5ad391=>{const _0xa58e02=_0x51cb5c;_0x5ad391[_0xa58e02(0x1b0)](_0xa58e02(0x116),handleTypeSelect);}),document[_0x51cb5c(0x1ca)](_0x51cb5c(0x1c7))[_0x51cb5c(0x1f0)](_0x559cfe=>{const _0x91bb0=_0x51cb5c;_0x559cfe['addEventListener'](_0x91bb0(0x116),handleDifficultySelect);}),document[_0x51cb5c(0x16a)](_0x51cb5c(0x15e))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),()=>changeQuantity(-0x5)),document['getElementById'](_0x51cb5c(0x14e))['addEventListener'](_0x51cb5c(0x116),()=>changeQuantity(0x5)),document[_0x51cb5c(0x16a)](_0x51cb5c(0x1a4))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),()=>changeTimeLimit(-0x1)),document[_0x51cb5c(0x16a)]('time-plus')['addEventListener'](_0x51cb5c(0x116),()=>changeTimeLimit(0x1)),document['getElementById'](_0x51cb5c(0x1a9))['addEventListener'](_0x51cb5c(0x116),startQuiz),document['getElementById']('next-problem-btn')['addEventListener'](_0x51cb5c(0x116),nextProblem),document[_0x51cb5c(0x201)](_0x51cb5c(0x11a))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),()=>{const _0xe488d0=_0x51cb5c;confirm(_0xe488d0(0x1f3))&&(resetGame(),showPage(_0xe488d0(0x1f2)));}),document[_0x51cb5c(0x16a)](_0x51cb5c(0x15b))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),showQrPopup),document[_0x51cb5c(0x16a)](_0x51cb5c(0x153))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),showHofPopup),document[_0x51cb5c(0x16a)](_0x51cb5c(0x174))[_0x51cb5c(0x1b0)](_0x51cb5c(0x116),submitScore),document[_0x51cb5c(0x16a)]('restart-btn')[_0x51cb5c(0x1b0)]('click',()=>{resetGame(),showPage('mode-selection-page');});const _0x4d5621=document['getElementById'](_0x51cb5c(0x11e)),_0x52a4b2=_0x4d5621[_0x51cb5c(0x201)](_0x51cb5c(0x1e2));let _0x4a3d2f=null,_0xf5fc1a=![];const _0xcdcb22=0x190,_0x4954d7=_0x3dad63=>{const _0x45390f=_0x51cb5c;if(_0x3dad63[_0x45390f(0x110)]===_0x45390f(0x179)&&_0x3dad63['button']!==0x0)return;_0x3dad63['preventDefault']();if(_0xf5fc1a)return;_0xf5fc1a=!![],_0x52a4b2[_0x45390f(0x1ff)][_0x45390f(0x1ed)]=_0x45390f(0x1a6)+_0xcdcb22/0x3e8+_0x45390f(0x100),_0x52a4b2[_0x45390f(0x1ff)][_0x45390f(0x1ae)]=_0x45390f(0x1fc),_0x4a3d2f=setTimeout(()=>{const _0x38ecbc=_0x45390f;if(!_0xf5fc1a)return;const _0x3d11cc=checkAnswer();_0x3d11cc?(showPopup(_0x38ecbc(0x11b),'',!![]),document[_0x38ecbc(0x16a)]('check-answer-btn')[_0x38ecbc(0x1ff)][_0x38ecbc(0x1b8)]=_0x38ecbc(0x16f),document[_0x38ecbc(0x16a)](_0x38ecbc(0xf5))[_0x38ecbc(0x1ff)][_0x38ecbc(0x1b8)]=_0x38ecbc(0x124),_0x503725()):_0x503725();},_0xcdcb22);},_0x503725=()=>{const _0x507c09=_0x51cb5c;if(!_0xf5fc1a)return;_0xf5fc1a=![],clearTimeout(_0x4a3d2f),_0x4a3d2f=null,_0x52a4b2[_0x507c09(0x1ff)][_0x507c09(0x1ed)]='transform\x200.2s\x20ease-out',_0x52a4b2[_0x507c09(0x1ff)][_0x507c09(0x1ae)]=_0x507c09(0x1db);};_0x4d5621[_0x51cb5c(0x1b0)](_0x51cb5c(0x179),_0x4954d7),_0x4d5621[_0x51cb5c(0x1b0)](_0x51cb5c(0x1c2),_0x4954d7,{'passive':![]}),_0x4d5621[_0x51cb5c(0x1b0)]('mouseup',_0x503725),_0x4d5621[_0x51cb5c(0x1b0)]('mouseleave',_0x503725),_0x4d5621['addEventListener'](_0x51cb5c(0x14a),_0x503725);const _0x4b1e5b=()=>{const _0xc44e56=_0x51cb5c;if(isExitingIntentionally)return;if(document['getElementById'](_0xc44e56(0x173))[_0xc44e56(0x1ff)][_0xc44e56(0x1b8)]===_0xc44e56(0x124))saveGameState();};window[_0x51cb5c(0x1b0)](_0x51cb5c(0x1cc),_0x4b1e5b),window['addEventListener'](_0x51cb5c(0x127),()=>{const _0x415100=_0x51cb5c;if(document[_0x415100(0x15a)]===_0x415100(0xfd))_0x4b1e5b();});};_0x5e42e0();}catch(_0xb8ea6c){console[_0x3fdc0c(0x159)]('오류가\x20발생하여\x20앱을\x20초기화합니다:',_0xb8ea6c),clearGameState(),alert(_0x3fdc0c(0x106)),location[_0x3fdc0c(0x143)]();}};
+</script>
+
+</body>
+</html>
